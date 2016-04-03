@@ -33,6 +33,7 @@ namespace CodeComb.Flow.Abstractions
         void CreateRequest(TRequest request);
 
         TLog GetLog(Guid id);
+        ICollection<TLog> GetfSubStepLogs(Guid RequestId, Guid NodeId);
         void RemoveLog(Guid id);
         void UpdateLog(Guid id, TLog log);
         void CreateLog(TLog log);

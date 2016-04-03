@@ -7,6 +7,6 @@ namespace CodeComb.Flow
 {
     public enum NodeType
     {
-        Begin,And,Or,Approve,GroupAnd,GroupOr
+        Begin, End, And, Or, Single, GroupAnd, GroupOr
     }
 }

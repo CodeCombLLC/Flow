@@ -29,5 +29,8 @@ namespace CodeComb.Flow
         /// </summary>
         public Guid SubId { set; get; }
 
+        public long X { get; set; }
+
+        public long Y { get; set; }
     }
 }
