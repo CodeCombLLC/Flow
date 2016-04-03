@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CodeComb.Flow.Abstractions
 {
@@ -27,7 +26,7 @@ namespace CodeComb.Flow.Abstractions
         /// </summary>
         /// <param name="RequestId"></param>
         /// <returns></returns>
-        public ICollection<TNode> GetCurrentStep(Guid RequestId)
+        public virtual ICollection<TNode> GetCurrentStep(Guid RequestId)
         {
             var request = Storage.GetRequest(RequestId);
             var begin = Storage.GetBeginOfSub(request.SubId);
@@ -39,7 +38,7 @@ namespace CodeComb.Flow.Abstractions
         /// </summary>
         /// <param name="RequestId"></param>
         /// <returns></returns>
-        public ICollection<string> GetCurrentApproverIds(Guid RequestId)
+        public virtual ICollection<string> GetCurrentApproverIds(Guid RequestId)
         {
             var nodes = GetCurrentStep(RequestId);
             return nodes
@@ -54,7 +53,7 @@ namespace CodeComb.Flow.Abstractions
         /// </summary>
         /// <param name="RequestId"></param>
         /// <returns></returns>
-        public ICollection<TUser> GetCurrentApprovers(Guid RequestId)
+        public virtual ICollection<TUser> GetCurrentApprovers(Guid RequestId)
         {
             return GetCurrentApproverIds(RequestId)
                 .Select(x => UP.GetUser(x))
