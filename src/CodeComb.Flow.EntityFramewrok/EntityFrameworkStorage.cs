@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using CodeComb.Flow.Abstractions;
 
 namespace CodeComb.Flow.EntityFramewrok
@@ -10,9 +11,9 @@ namespace CodeComb.Flow.EntityFramewrok
     {
         private IFlowDbContext<TRequest> DB;
 
-        public EntityFrameworkStorage(IFlowDbContext<TRequest> DbContext)
+        public EntityFrameworkStorage(IServiceProvider services, IFlowDbContext<TRequest> DbContext)
         {
-            DB = DbContext;
+            DB = (IFlowDbContext<TRequest>)services.GetRequiredService(DbContext.GetType());
         }
 
         public void CreateLog(ApproveLog log)

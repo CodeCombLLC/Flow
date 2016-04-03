@@ -1,53 +1,27 @@
-﻿using Microsoft.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CodeComb.Flow;
+using CodeComb.Flow.EntityFramewrok;
 
-namespace CodeComb.Flow.EntityFramewrok
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ModelBuilderExtensions
+    public static class FlowBuilderExtensions
     {
-        public static ModelBuilder SetupCodeCombFlow<TRequest>(this ModelBuilder self)
+        public static FlowBuilder AddEntityFrameworkStorage<TContext, TRequest>(this FlowBuilder self)
+            where TContext : class, IFlowDbContext<TRequest>
             where TRequest : Request
         {
-            self.Entity<ApproveLog>(e =>
-            {
-                e.HasIndex(x => x.NodeId);
-                e.HasIndex(x => x.RequestId);
-                e.HasIndex(x => x.Status);
-                e.HasIndex(x => x.ApproverId);
-                e.HasIndex(x => x.CreatedDate);
-            });
-
-            self.Entity<Node>(e =>
-            {
-                e.HasIndex(x => x.SubId);
-                e.HasIndex(x => x.SubId);
-            });
-
-            self.Entity<NodeRelation>(e =>
-            {
-                e.HasIndex(x => x.NodeId);
-                e.HasIndex(x => x.Transition);
-            });
-
-            self.Entity<TRequest>(e => 
-            {
-                e.HasIndex(x => x.Status);
-                e.HasIndex(x => x.SubId);
-                e.Property(x => x.UserId).HasMaxLength(64);
-                e.HasIndex(x => x.UserId);
-            });
-
-            self.Entity<Sub>(e =>
-            {
-                e.HasIndex(x => x.CreatedDate);
-                e.Property(x => x.Title).HasMaxLength(256);
-                e.HasIndex(x => x.Title);
-            });
-
+            self.services.AddScoped<IFlowDbContext<TRequest>, TContext>();
             return self;
         }
-        public static ModelBuilder SetupCodeCombFLow(this ModelBuilder self)
+
+        public static FlowBuilder AddEntityFrameworkStorage<TContext>(this FlowBuilder self)
+            where TContext : class, IFlowDbContext<Request>
         {
-            return self.SetupCodeCombFlow<Request>();
+            self.AddEntityFrameworkStorage<TContext, Request>();
+            return self;
         }
     }
 }

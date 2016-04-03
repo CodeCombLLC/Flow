@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CodeComb.Flow.Abstractions
+﻿namespace Microsoft.Extensions.DependencyInjection
 {
-    public class FlowBuilder : ServiceCollection
+    public class FlowBuilder
     {
+        public ServiceCollection services;
     }
 }
