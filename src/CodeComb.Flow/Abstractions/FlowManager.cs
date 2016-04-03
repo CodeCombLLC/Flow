@@ -22,43 +22,88 @@ namespace CodeComb.Flow.Abstractions
         public ICollection<TNode> GetCurrentStep(Guid RequestId)
         {
             var request = Storage.GetRequest(RequestId);
-            if (request.Status != ApproveStatus.Processing)
-                return Storage
-                    .GetNodesBySubId(request.SubId)
-                    .Where(x => x.Type == NodeType.End)
-                    .ToList();
-            var logs = Storage.GetLogsByRequestId(RequestId);
-            var nodes = Storage.GetNodesBySubId(request.SubId);
-            var begin = nodes.Where(x => x.Type == NodeType.Begin).Single();
-            var hash = new Dictionary<Guid, bool>();
+            var begin = Storage.GetBeginOfSub(request.SubId);
+            return TraverseGraph(begin, null, RequestId);
         }
 
-        private ICollection<Node> TraverseGraph(Node Current, Guid RequestId, int layer = 0)
+        protected virtual ICollection<TNode> TraverseGraph(TNode Current, TNode Prev, Guid RequestId)
         {
             var steps = Storage.GetfSubStepLogs(RequestId, Current.Id);
             if (Current.Type == NodeType.Single)
             {
-
+                var logs = Storage.GetfSubStepLogs(RequestId, Current.Id);
+                if (logs.Any(x => x.Status == ApproveStatus.Processing))
+                {
+                    return new List<TNode> { Current };
+                }
+                else
+                {
+                    var next = Storage.GetNextNodes(Current.Id);
+                    return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
+                }
             }
             else if (Current.Type == NodeType.GroupAnd)
             {
-
+                var logs = Storage.GetfSubStepLogs(RequestId, Current.Id);
+                if (logs.Any(x => x.Status == ApproveStatus.Processing))
+                {
+                    return Storage.GetNextNodes(Prev.Id).ToList();
+                }
+                else
+                {
+                    var next = Storage.GetNextNodes(Current.Id);
+                    return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
+                }
             }
             else if (Current.Type == NodeType.GroupOr)
             {
-
+                var logs = Storage.GetfSubStepLogs(RequestId, Current.Id);
+                if (logs.All(x => x.Status == ApproveStatus.Processing))
+                {
+                    return Storage.GetNextNodes(Prev.Id).ToList();
+                }
+                else
+                {
+                    var next = Storage.GetNextNodes(Current.Id);
+                    return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
+                }
             }
             else if (Current.Type == NodeType.And)
             {
-
+                var prev = Storage.GetPrevNodes(Current.Id);
+                var logs = prev.SelectMany(x => Storage.GetfSubStepLogs(RequestId, x.Id)).ToList();
+                if (logs.Any(x => x.Status == ApproveStatus.Processing))
+                {
+                    return prev;
+                }
+                else
+                {
+                    var next = Storage.GetNextNodes(Current.Id);
+                    return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
+                }
             }
             else if (Current.Type == NodeType.Or)
             {
-
+                var prev = Storage.GetPrevNodes(Current.Id);
+                var logs = prev.SelectMany(x => Storage.GetfSubStepLogs(RequestId, x.Id)).ToList();
+                if (logs.All(x => x.Status == ApproveStatus.Processing))
+                {
+                    return prev;
+                }
+                else
+                {
+                    var next = Storage.GetNextNodes(Current.Id);
+                    return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
+                }
             }
             else if (Current.Type == NodeType.End)
             {
-
+                return new List<TNode> { Current };
+            }
+            else // Begin
+            {
+                var next = Storage.GetNextNodes(Current.Id);
+                return next.SelectMany(x => TraverseGraph(x, Current, RequestId)).ToList();
             }
         }
     }

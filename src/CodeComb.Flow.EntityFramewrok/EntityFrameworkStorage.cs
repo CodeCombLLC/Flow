@@ -51,6 +51,11 @@ namespace CodeComb.Flow.EntityFramewrok
             DB.SaveChanges();
         }
 
+        public Node GetBeginOfSub(Guid SubId)
+        {
+            return DB.Nodes.Where(x => x.SubId == SubId && x.Type == NodeType.Begin).Single();
+        }
+
         public ICollection<ApproveLog> GetfSubStepLogs(Guid RequestId, Guid NodeId)
         {
             return DB.ApproveLogs.Where(x => x.RequestId == RequestId && x.NodeId == NodeId).ToList();

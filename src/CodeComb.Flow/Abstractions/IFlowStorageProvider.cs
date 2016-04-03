@@ -22,6 +22,7 @@ namespace CodeComb.Flow.Abstractions
         ICollection<TNode> GetNodesBySubId(Guid SubId);
         ICollection<TNode> GetNextNodes(Guid NodeId);
         ICollection<TNode> GetPrevNodes(Guid NodeId);
+        TNode GetBeginOfSub(Guid SubId);
 
         bool RelationExist(Guid NodeId, Guid ChildId, bool Transition);
         void RemoveRelation(Guid NodeId, Guid ChildId, bool Transition);
