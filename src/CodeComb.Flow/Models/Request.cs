@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeCombFlow
+namespace CodeComb.Flow
 {
     public class Request
     {
@@ -18,14 +18,7 @@ namespace CodeCombFlow
         /// 发起用户的ID
         /// </summary>
         public string UserId { set; get; }
-
-        /// <summary>
-        /// 当前走在哪个ID
-        /// </summary>
-        public Guid CurrentNodeId { set; get; }
            
-         
         public ApproveStatus Status { set; get; }
-       
     }
 }

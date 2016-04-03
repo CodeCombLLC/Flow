@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeCombFlow
+namespace CodeComb.Flow
 {
     public class Node
     {
@@ -27,7 +27,7 @@ namespace CodeCombFlow
         /// <summary>
         /// 流程的ID
         /// </summary>
-        public Guid SubID { set; get; }
+        public Guid SubId { set; get; }
 
     }
 }

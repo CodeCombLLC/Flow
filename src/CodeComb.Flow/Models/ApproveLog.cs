@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeCombFlow
+namespace CodeComb.Flow
 {
     public class ApproveLog
     {
@@ -30,5 +30,7 @@ namespace CodeCombFlow
         /// 审批意见
         /// </summary>
         public string Hint { set; get; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }

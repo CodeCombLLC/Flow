@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeCombFlow
+namespace CodeComb.Flow
 {
     public class NodeRelation
     {
-
-
         /// <summary>
         /// 父节点ID
         /// </summary>

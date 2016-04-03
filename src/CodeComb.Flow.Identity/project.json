@@ -1,10 +1,15 @@
 ﻿{
   "version": "1.0.0-*",
-  "description": "CodeCombFlow Class Library",
+  "description": "CodeComb.Flow.Identity Class Library",
   "authors": [ "Yuuko" ],
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
+
+  "dependencies": {
+    "CodeComb.Flow": "1.0.0-*",
+    "Microsoft.AspNet.Identity": "3.0.0-rc1-final"
+  },
 
   "frameworks": {
     "net451": { },
