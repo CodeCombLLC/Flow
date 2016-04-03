@@ -19,7 +19,7 @@ namespace CodeComb.Flow
         /// <summary>
         /// 审批者ID
         /// </summary>
-        public Guid ApproverId { set; get; }
+        public string ApproverId { set; get; }
 
         /// <summary>
         /// 审批者给的状态
